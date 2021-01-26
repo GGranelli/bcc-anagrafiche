@@ -21,6 +21,7 @@ public class Articolo implements java.io.Serializable {
 	private String nome;
 	private Integer codiceFornitore;
 	private Double prezzo;
+	private Integer quantita;
 	
 	@OneToMany(mappedBy="articolo")
 	private List<OrdiniArticoli> ordiniArticoli;
@@ -89,6 +90,13 @@ public class Articolo implements java.io.Serializable {
 	public void setOrdiniArticoli(OrdiniArticoli ordiniArticoli) 
 	{
 		this.ordiniArticoli.add(ordiniArticoli);
+	}
+	
+	public Integer getQuantita() {
+		return quantita;
+	}
+	public void setQuantita(Integer quantita) {
+		this.quantita = quantita;
 	}
 	
 	

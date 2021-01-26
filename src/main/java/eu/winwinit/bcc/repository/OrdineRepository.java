@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import eu.winwinit.bcc.entities.Articolo;
 import eu.winwinit.bcc.entities.Ordine;
 
 @Repository("ordineRepository")

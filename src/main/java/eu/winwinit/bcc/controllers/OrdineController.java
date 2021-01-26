@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.winwinit.bcc.constants.AuthorityRolesConstants;
 import eu.winwinit.bcc.entities.Ordine;
 import eu.winwinit.bcc.model.OrdineInsertRequest;
+import eu.winwinit.bcc.model.OrdineWithArticoliGet;
 import eu.winwinit.bcc.service.OrdineService;
 
 @RequestMapping("/api/v1/ordine")
@@ -30,11 +31,16 @@ public class OrdineController {
 		return ordineService.findOrdineAll();
 	}
 	
+	
 	@RequestMapping(value="/getOrdineById", method = RequestMethod.GET)
-	public Ordine getOrdineByIdOrdine(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
-									  @RequestParam(value="idOrdine")Integer idOrdine)
+	public ResponseEntity getOrdineByIdOrdine(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
+									  				 @RequestParam(value="idOrdine")Integer idOrdine)
 	{
-		return ordineService.findOrdineById(idOrdine).orElse(null);
+		OrdineWithArticoliGet ordineToReturn = ordineService.findOrdineById(idOrdine);
+		if(ordineToReturn!=null)
+			return ResponseEntity.ok(ordineToReturn);
+		
+		return ResponseEntity.badRequest().body("id ordine not found");
 	}
 	
 	
@@ -47,23 +53,23 @@ public class OrdineController {
 	}
 	
 	@RequestMapping(value = "/updateData", method = RequestMethod.PUT)
-	public void updateOrdine(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
+	public String updateOrdine(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
 							 @RequestParam(value="idOrdine")Integer idOrdine,
 							 @RequestParam(value="data") Date data)
 	{
-		ordineService.updateOrdine(idOrdine,data);
+		return ordineService.updateOrdine(idOrdine,data);
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public void deleteOrdine(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
+	public String deleteOrdine(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
 							   @RequestParam(value="idOrdine") Integer ordineId)
 	{
-		ordineService.deleteOrdine(ordineId);
+		return ordineService.deleteOrdine(ordineId);
 	}
 	
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
     public ResponseEntity<String> insertOrdine(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
-    														 @RequestBody OrdineInsertRequest ordineInsertRequest) 
+    										   @RequestBody OrdineInsertRequest ordineInsertRequest) 
 	{
 
 		String stato = ordineService.insertOrder(ordineInsertRequest);

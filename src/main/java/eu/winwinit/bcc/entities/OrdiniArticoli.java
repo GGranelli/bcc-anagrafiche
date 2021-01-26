@@ -19,12 +19,12 @@ public class OrdiniArticoli implements java.io.Serializable{
 	
 	@ManyToOne
 	@MapsId("idOrdini")
-	@JoinColumn(name="id_ordine")
+	@JoinColumn(name="id_ordine", insertable = false, updatable = false)
 	private Ordine ordine;
 	
 	@ManyToOne
 	@MapsId("idArticoli")
-	@JoinColumn(name="id_articolo")
+	@JoinColumn(name="id_articolo", insertable = false, updatable = false)
 	private Articolo articolo;
 	
 	private Integer quantita;
@@ -47,6 +47,16 @@ public class OrdiniArticoli implements java.io.Serializable{
 	{
 		this.primaryKey.setIdOrdini(id1);
 		this.primaryKey.setIdArticoli(id2);
+	}
+	
+	public Integer getIdOrdini()
+	{
+		return this.primaryKey.getIdOrdini();
+	}
+	
+	public Integer getIdArticoli()
+	{
+		return this.primaryKey.getIdArticoli();
 	}
 	
 	@Column(name="quantita", unique=false, nullable=true)

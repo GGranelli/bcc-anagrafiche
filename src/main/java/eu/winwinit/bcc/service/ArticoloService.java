@@ -15,9 +15,9 @@ public interface ArticoloService {
 	
 	public List<Articolo> findArticoloByCodiceFornitore(Integer codiceFornitore);
 	
-	public int insertArticolo(Articolo articolo);
+	public String insertArticolo(Articolo articolo);
 	
-	public int deleteArticoloById(Integer idArticolo);
+	public String deleteArticoloById(Integer idArticolo);
 	
-	public int updateArticoloById(Integer id,Articolo articolo);
+	public String updateArticoloById(Integer id,Articolo articolo);
 }

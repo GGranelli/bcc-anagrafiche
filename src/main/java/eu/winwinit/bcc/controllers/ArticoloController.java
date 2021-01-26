@@ -50,25 +50,25 @@ public class ArticoloController {
 	}
 	
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public void insertArticolo(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
+    public String insertArticolo(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
     						   @RequestBody Articolo articolo)
     {
-		articoloService.insertArticolo(articolo);
+		return articoloService.insertArticolo(articolo);
     }
 	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public void updateArticolo(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
+	public String updateArticolo(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
 							   @RequestParam(value="id") Integer id,
 							   @RequestBody Articolo articolo)
 	{
-		articoloService.updateArticoloById(id,articolo);
+		return articoloService.updateArticoloById(id,articolo);
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public void deleteArticolo(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
+	public String deleteArticolo(@RequestHeader(value=AuthorityRolesConstants.HEADER_STRING) String jwtToken,
 							   @RequestParam(value="idArticolo") Integer id)
 	{
-		articoloService.deleteArticoloById(id);
+		return articoloService.deleteArticoloById(id);
 	}
 	
 }

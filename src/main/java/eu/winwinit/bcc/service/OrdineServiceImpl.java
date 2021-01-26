@@ -2,7 +2,6 @@ package eu.winwinit.bcc.service;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,9 @@ import eu.winwinit.bcc.entities.Articolo;
 import eu.winwinit.bcc.entities.Ordine;
 import eu.winwinit.bcc.entities.OrdiniArticoli;
 import eu.winwinit.bcc.entities.OrdiniArticoliPK;
+import eu.winwinit.bcc.model.ArticoloWithQuantita;
 import eu.winwinit.bcc.model.OrdineInsertRequest;
+import eu.winwinit.bcc.model.OrdineWithArticoliGet;
 import eu.winwinit.bcc.model.OrdiniArticoliToInsert;
 import eu.winwinit.bcc.repository.ArticoloRepository;
 import eu.winwinit.bcc.repository.OrdineRepository;
@@ -33,10 +34,26 @@ public class OrdineServiceImpl implements OrdineService{
 		return ordineRepository.findAll();
 	}
 
+//	@Override
+//	public Optional<Ordine> findOrdineById(Integer id) 
+//	{
+//		return ordineRepository.findById(id);
+//	}
+	
 	@Override
-	public Optional<Ordine> findOrdineById(Integer id) 
+	public OrdineWithArticoliGet findOrdineById(Integer id) 
 	{
-		return ordineRepository.findById(id);
+		
+		Ordine ordine = ordineRepository.findById(id).orElse(null);
+		
+		if(ordine!=null)
+		{
+			List<ArticoloWithQuantita> listArticoli = ordiniArticoliRepository.findByIdOrdine(id);
+
+			OrdineWithArticoliGet ordArtToGet = new OrdineWithArticoliGet(id,ordine.getData(),ordine.getPrezzoTotale(),listArticoli);
+			return ordArtToGet;
+		}
+		return null;
 	}
 
 	@Override
@@ -52,28 +69,28 @@ public class OrdineServiceImpl implements OrdineService{
 	}
 
 	@Override
-	public int deleteOrdine(Integer id) 
+	public String deleteOrdine(Integer id) 
 	{
 		Ordine ordineToDelete = ordineRepository.findById(id).orElse(null);
 		if(ordineToDelete!=null)
 		{
 			ordineRepository.delete(ordineToDelete);
-			return 1;
+			return "deleted ordine with id: "+id;
 		}
-		return 0;
+		return "ordine not found";
 	}
 
 	@Override
-	public int updateOrdine(Integer idOrdine, Date data) 
+	public String updateOrdine(Integer idOrdine, Date data) 
 	{
 		Ordine ordineToUpdate = ordineRepository.findById(idOrdine).orElse(null);
 		if(ordineToUpdate!=null)
 		{
 			ordineToUpdate.setData(data);
 			ordineRepository.save(ordineToUpdate);
-			return 1;
+			return "ordine's date updated";
 		}
-		return 0;
+		return "ordine not updated";
 	}
 	
 	/*

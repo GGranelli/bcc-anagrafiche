@@ -42,26 +42,26 @@ public class ArticoloServiceImpl implements ArticoloService{
 	}
 	
 	@Override
-	public int insertArticolo(Articolo articolo)
+	public String insertArticolo(Articolo articolo)
 	{
 		articoloRepository.save(articolo);
-		return articolo.getIdArticolo();
+		return "inserted articolo with id: "+articolo.getIdArticolo(); //return id
 	}
 	
 	@Override
-	public int deleteArticoloById(Integer idArticolo)
+	public String deleteArticoloById(Integer idArticolo)
 	{
 		Articolo articolo = findArticoloById(idArticolo).orElse(null);
 		if(articolo!=null)
 		{
 			articoloRepository.delete(articolo);
-			return 1;
+			return "deleted articolo with id: "+idArticolo;
 		}
-		return 0;
+		return "articolo not found";
 	}
 	
 	@Override
-	public int updateArticoloById(Integer id,Articolo articolo)
+	public String updateArticoloById(Integer id,Articolo articolo)
 	{
 		Articolo oldArticolo = findArticoloById(id).orElse(null);
 		if(oldArticolo!=null)
@@ -71,9 +71,9 @@ public class ArticoloServiceImpl implements ArticoloService{
 			if(articolo.getCodiceFornitore()!=null) oldArticolo.setCodiceFornitore(articolo.getCodiceFornitore());
 			
 			articoloRepository.save(oldArticolo);
-			return 1;
+			return "update articolo successful";
 		}
-		return 0;
+		return "articolo not found";
 	}
 
 }
